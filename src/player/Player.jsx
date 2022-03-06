@@ -5,6 +5,7 @@ import { FaBackward, FaPause, FaPlay, FaForward } from "react-icons/fa";
 export default function Player({
   isPlaying,
   handlePlay,
+  handlePause,
   handleBack,
   handleNext,
 }) {
@@ -18,9 +19,11 @@ export default function Player({
         />
       </div>
       {/* Now playing */}
-      <h2 id="channel">P1</h2>
-      <h3 id="song">Misc</h3>
-      <audio src="https://sverigesradio.se/topsy/direkt/srapi/132.mp3"></audio>
+      <div className="player-details">
+        <h2 id="channel">P1</h2>
+        <h3 id="song">Misc</h3>
+        <audio src="https://sverigesradio.se/topsy/direkt/srapi/132.mp3"></audio>
+      </div>
       {/* Progress  */}
       <div className="progress-container" id="progress-container">
         <div className="progress" id="progress"></div>
@@ -38,7 +41,12 @@ export default function Player({
           title="Previous"
         />
         {isPlaying ? (
-          <FaPause className="fas pause" id="pause" title="Pause" />
+          <FaPause
+            onClick={handlePause}
+            className="fas pause"
+            id="pause"
+            title="Pause"
+          />
         ) : (
           <FaPlay
             onClick={handlePlay}

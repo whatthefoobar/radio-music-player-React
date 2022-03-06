@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import "./App.css";
 import Player from "./player/Player";
-import "./index.css";
 import {
   getRadioChannels,
   fetchCurrentlyPlayingByChannelId,
@@ -10,7 +9,7 @@ import {
 function App() {
   const [channels, setChannels] = useState([]);
   const [playlist, setPlaylist] = useState([]);
-  const [isPlaying, setIsPlaying] = useState(false);
+  const [isPlaying, setIsPlaying] = useState(true);
 
   useEffect(() => {
     getRadioChannels().then((res) => setChannels(res));
@@ -18,6 +17,9 @@ function App() {
 
   const handlePlay = () => {
     console.log("Play!");
+  };
+  const handlePause = () => {
+    console.log("Pause!");
   };
 
   const handleBack = () => {
@@ -34,6 +36,7 @@ function App() {
       <Player
         isPlaying={isPlaying}
         handlePlay={handlePlay}
+        handlePause={handlePause}
         handleBack={handleBack}
         handleNext={handleNext}
       />

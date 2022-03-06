@@ -9,7 +9,7 @@ export async function getRadioChannels() {
     let res = await response.json();
     const channels = res.channels;
 
-    console.log("All channels: ", channels);
+    // console.log("All channels: ", channels);
     return channels;
   } catch (error) {
     console.log("error :", error);
