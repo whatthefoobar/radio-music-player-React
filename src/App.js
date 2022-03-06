@@ -10,6 +10,7 @@ import {
 function App() {
   const [channels, setChannels] = useState([]);
   const [playlist, setPlaylist] = useState([]);
+  const [isPlaying, setIsPlaying] = useState(false);
 
   useEffect(() => {
     getRadioChannels().then((res) => setChannels(res));
@@ -31,6 +32,7 @@ function App() {
     <div className="App">
       <h2>Get your music here</h2>
       <Player
+        isPlaying={isPlaying}
         handlePlay={handlePlay}
         handleBack={handleBack}
         handleNext={handleNext}

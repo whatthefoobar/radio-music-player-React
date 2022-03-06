@@ -1,8 +1,13 @@
 import React from "react";
 import "./player.css";
-import { FaBackward, FaPlay, FaForward } from "react-icons/fa";
+import { FaBackward, FaPause, FaPlay, FaForward } from "react-icons/fa";
 
-export default function Player({ handlePlay, handleBack, handleNext }) {
+export default function Player({
+  isPlaying,
+  handlePlay,
+  handleBack,
+  handleNext,
+}) {
   return (
     <div className="player-container">
       {/* Song */}
@@ -32,12 +37,17 @@ export default function Player({ handlePlay, handleBack, handleNext }) {
           id="prev"
           title="Previous"
         />
-        <FaPlay
-          onClick={handlePlay}
-          className="fas play"
-          id="play"
-          title="Play"
-        />
+        {isPlaying ? (
+          <FaPause className="fas pause" id="pause" title="Pause" />
+        ) : (
+          <FaPlay
+            onClick={handlePlay}
+            className="fas play"
+            id="play"
+            title="Play"
+          />
+        )}
+
         <FaForward
           onClick={handleNext}
           className="fas next"
