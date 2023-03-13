@@ -29,7 +29,6 @@ function App() {
   const handleNext = () => {
     console.log("Next!");
   };
-
   return (
     <div className="App">
       <h2>Get your music here</h2>
