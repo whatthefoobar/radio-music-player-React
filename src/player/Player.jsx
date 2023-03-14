@@ -1,14 +1,31 @@
 import React from "react";
 import "./player.css";
 import { FaBackward, FaPause, FaPlay, FaForward } from "react-icons/fa";
+import { useState, useRef } from "react";
 
-export default function Player({
-  isPlaying,
-  handlePlay,
-  handlePause,
-  handleBack,
-  handleNext,
-}) {
+const Player = ({ channels }) => {
+  console.log(channels);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const audioPlayer = useRef(); // grab audio elem to play pause
+
+  const handlePlay = () => {
+    console.log("Play!");
+    setIsPlaying(!isPlaying);
+    audioPlayer.current.play();
+  };
+  const handlePause = () => {
+    console.log("Pause!");
+    setIsPlaying(!isPlaying);
+    audioPlayer.current.pause();
+  };
+
+  const handleBack = () => {
+    console.log("Back!");
+  };
+
+  const handleNext = () => {
+    console.log("Next!");
+  };
   return (
     <div className="player-container">
       {/* Song */}
@@ -22,7 +39,10 @@ export default function Player({
       <div className="player-details">
         <h2 id="channel">P1</h2>
         <h3 id="song">Misc</h3>
-        <audio src="https://sverigesradio.se/topsy/direkt/srapi/132.mp3"></audio>
+        <audio
+          src="https://sverigesradio.se/topsy/direkt/srapi/132.mp3"
+          ref={audioPlayer}
+        ></audio>
       </div>
       {/* Progress  */}
       <div className="progress-container" id="progress-container">
@@ -65,4 +85,6 @@ export default function Player({
       </div>
     </div>
   );
-}
+};
+
+export default Player;
