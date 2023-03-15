@@ -9,13 +9,27 @@ export async function getRadioChannels() {
     let res = await response.json();
     const channels = res.channels;
 
-    // console.log("All channels: ", channels);
     return channels;
   } catch (error) {
     console.log("error :", error);
   }
 }
-
+// export async function getRadioChannelIds() {
+//   const channelsUrl =
+//     "https://api.sr.se/api/v2/channels?format=json&indent=true&pagination=false";
+//   try {
+//     let response = await fetch(channelsUrl);
+//     let res = await response.json();
+//     const channels = res.channels;
+//     let channelIds = [];
+//     channels.map((channel) => {
+//       return channelIds.push(channel.id);
+//     });
+//     return channelIds;
+//   } catch (error) {
+//     console.log("error :", error);
+//   }
+// }
 export async function fetchCurrentlyPlayingByChannelId(id) {
   const defaultApiUrl = "http://api.sr.se/api/v2";
   try {

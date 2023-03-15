@@ -8,18 +8,22 @@ import {
 
 function App() {
   const [channels, setChannels] = useState([]);
+  const [channelIds, setChannelIds] = useState([]);
   const [playlist, setPlaylist] = useState([]);
 
   useEffect(() => {
     getRadioChannels().then((res) => setChannels(res));
-    console.log("all channels", channels);
+
+    channels.map((channel) => {
+      setChannelIds(channelIds.push(channel.id));
+    });
   }, []);
 
   return (
     <div className="App">
       <h2>Get your music here</h2>
 
-      <Player channels={channels} />
+      <Player channels={channels} channelIds={channelIds} />
     </div>
   );
 }
