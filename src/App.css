@@ -95,13 +95,14 @@ span {
   position: relative;
   top: -20px;
   left: 100px;
-  width: 200px;
+  /* width: 200px; */
 }
 
 .fas {
-  font-size: 30px;
+  font-size: 20px;
   color: rgb(129, 129, 129);
-  margin-right: 30px;
+  padding: 5px 12px;
+  text-align: center;
   cursor: pointer;
   user-select: none;
 }
@@ -111,7 +112,7 @@ span {
 }
 
 .main-button {
-  font-size: 40px;
+  font-size: 20px;
   position: relative;
   top: 3px;
 }

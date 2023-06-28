@@ -24,6 +24,9 @@ const App = () => {
   const [duration, setDuration] = useState(0);
   const [progressPercent, setProgressPercent] = useState(0);
 
+  const [currentImage, setCurrentImage] = useState(images[0]);
+  const audioRef = React.useRef(null);
+
   useEffect(() => {
     getRadioChannels();
   }, []);
@@ -89,10 +92,12 @@ const App = () => {
   const playStation = () => {
     setIsPlaying(true);
     setCurrentSong(playlist.song[0].description);
+    audioRef.current.play();
   };
 
   const pauseStation = () => {
     setIsPlaying(false);
+    audioRef.current.pause();
   };
 
   const prevStation = () => {
@@ -101,6 +106,7 @@ const App = () => {
       newIndex = channels.length - 1;
     }
     setStationIndex(newIndex);
+    audioRef.current.play();
   };
 
   const nextStation = () => {
@@ -109,26 +115,27 @@ const App = () => {
       newIndex = 0;
     }
     setStationIndex(newIndex);
+    audioRef.current.play();
   };
 
-  const updateProgressBar = (e) => {
-    if (isPlaying) {
-      const { duration, currentTime } = e.target;
-      const progressPercent = (currentTime / duration) * 100;
-      setCurrentTime(currentTime);
-      setDuration(duration);
-      setProgressPercent(progressPercent);
-    }
-  };
+  // const updateProgressBar = (e) => {
+  //   if (isPlaying) {
+  //     const { duration, currentTime } = e.target;
+  //     const progressPercent = (currentTime / duration) * 100;
+  //     setCurrentTime(currentTime);
+  //     setDuration(duration);
+  //     setProgressPercent(progressPercent);
+  //   }
+  // };
 
-  const setProgressBar = (e) => {
-    const width = progressContainer.getAttribute("width");
-    const clickX = e.nativeEvent.offsetX;
-    const { duration } = music;
-    const newCurrentTime = (clickX / width) * duration;
-    music.currentTime = newCurrentTime;
-    setCurrentTime(newCurrentTime);
-  };
+  // const setProgressBar = (e) => {
+  //   const width = progressContainer.getAttribute("width");
+  //   const clickX = e.nativeEvent.offsetX;
+  //   const { duration } = music;
+  //   const newCurrentTime = (clickX / width) * duration;
+  //   music.currentTime = newCurrentTime;
+  //   setCurrentTime(newCurrentTime);
+  // };
 
   return (
     <div className="player-container">
@@ -143,13 +150,14 @@ const App = () => {
           onPlay={playStation}
           onPause={pauseStation}
           onEnded={nextStation}
-          onTimeUpdate={updateProgressBar}
+          // onTimeUpdate={updateProgressBar}
+          ref={audioRef}
         ></audio>
       </div>
       <div
         className="progress-container"
         id="progress-container"
-        onClick={setProgressBar}
+        // onClick={setProgressBar}
       >
         <div
           className="progress"
@@ -162,25 +170,22 @@ const App = () => {
         </div>
       </div>
       <div className="player-controls">
-        <i
-          className="fas fa-backward"
-          onClick={prevStation}
-          title="Previous"
-        ></i>
+        <button onClick={prevStation}>
+          <i className="fas fa-backward" title="Previous"></i>
+        </button>
+
         {isPlaying ? (
-          <i
-            className="fas fa-pause main-button"
-            onClick={pauseStation}
-            title="Pause"
-          ></i>
+          <button onClick={pauseStation}>
+            <i className="fas fa-pause main-button" title="Pause"></i>
+          </button>
         ) : (
-          <i
-            className="fas fa-play main-button"
-            onClick={playStation}
-            title="Play"
-          ></i>
+          <button onClick={playStation}>
+            <i className="fas fa-play main-button" title="Play"></i>
+          </button>
         )}
-        <i className="fas fa-forward" onClick={nextStation} title="Next"></i>
+        <button onClick={nextStation}>
+          <i className="fas fa-forward" title="Next"></i>
+        </button>
       </div>
     </div>
   );
