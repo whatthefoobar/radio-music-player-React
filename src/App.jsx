@@ -154,10 +154,10 @@ const App = () => {
           ref={audioRef}
         ></audio>
       </div>
-      <div
+      {/* <div
         className="progress-container"
         id="progress-container"
-        // onClick={setProgressBar}
+        onClick={setProgressBar}
       >
         <div
           className="progress"
@@ -168,7 +168,7 @@ const App = () => {
           <span id="current-time">{currentTime}</span>
           <span id="duration">{duration}</span>
         </div>
-      </div>
+      </div> */}
       <div className="player-controls">
         <button onClick={prevStation}>
           <i className="fas fa-backward" title="Previous"></i>

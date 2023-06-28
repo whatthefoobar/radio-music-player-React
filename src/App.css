@@ -89,11 +89,14 @@ span {
   display: flex;
   justify-content: space-between;
 }
-
+.player-details {
+  text-align: center;
+  margin-bottom: 30px;
+}
 /* Controls */
 .player-controls {
   position: relative;
-  top: -20px;
+  top: -10px;
   left: 100px;
   /* width: 200px; */
 }
