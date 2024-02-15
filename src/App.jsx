@@ -3,12 +3,12 @@ import React from "react";
 import Player from "./player/Player";
 
 const App = () => {
-  const channelId = "123"; // Provide your channel ID here or dynamically get it
+  // const channelId = "123";
 
   return (
-    <div>
+    <>
       <Player /> {/* Render the Player component */}
-    </div>
+    </>
   );
 };
 

@@ -35,6 +35,10 @@
   color: #333;
 }
 
+.now-playing {
+  font-size: 2rem;
+}
+
 .player-controls {
   display: flex;
   justify-content: center;

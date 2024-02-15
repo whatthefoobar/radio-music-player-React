@@ -1,11 +1,16 @@
 import React, { useRef, useState } from "react";
 import { FaBackward, FaPlay, FaPause, FaStop, FaForward } from "react-icons/fa";
 import "./Player.css"; // Import CSS file for styling
-import { useRadioChannels } from "../api/customHooks";
+
+import { useFetchRadioChannelsQuery } from "../slices/apiSlice";
 
 const Player = () => {
-  const { channels, loading, error } = useRadioChannels();
-  console.log("all channels", channels);
+  const {
+    data: { channels },
+    isLoading,
+  } = useFetchRadioChannelsQuery();
+  console.log("channels", channels);
+
   const [audioState, setAudioState] = useState("stopped");
   const [currentChannelIndex, setCurrentChannelIndex] = useState(0);
   const audioRef = useRef(null);
@@ -43,7 +48,7 @@ const Player = () => {
     setAudioState("stopped"); // Stop playback when changing channels
   };
 
-  if (loading) return <p>Loading...</p>;
+  if (isLoading) return <p>Loading...</p>;
 
   return (
     <div className="player-container">
@@ -56,6 +61,9 @@ const Player = () => {
       </div>
       {/* Channel Name */}
       <h3 className="channel-name">{channels[currentChannelIndex].name}</h3>
+      {/* Now Playing */}
+      {/* <div className="now-playing">Now Playing: ..........</div> */}
+      {/* {playlist?.song} */}
       {/* Audio Player */}
       <audio
         ref={audioRef}
