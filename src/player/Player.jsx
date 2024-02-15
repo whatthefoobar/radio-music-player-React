@@ -1,95 +1,54 @@
-import React from "react";
-import "./player.css";
-import { FaBackward, FaPause, FaPlay, FaForward } from "react-icons/fa";
-import { useState, useRef, useEffect } from "react";
-import { fetchCurrentlyPlayingByChannelId } from "../api/useFetch";
+import React, { useRef, useState } from "react";
+import { FaBackward, FaPlay, FaPause, FaStop, FaForward } from "react-icons/fa";
+import "./Player.css"; // Import CSS file for styling
+import { useRadioChannels } from "../api/customHooks";
 
-const Player = ({ channels, channelIds }) => {
+const Player = () => {
+  const { channels, loading, error } = useRadioChannels();
   console.log("all channels", channels);
-  console.log("all channel ids", channelIds);
-  console.log(channelIds[0]);
+  const [audioState, setAudioState] = useState("stopped");
+  const audioRef = useRef(null);
 
-  // filter out an object by its id from channels:
-  let radio = channels.filter((channel) => channel.id === channelIds[1]).pop();
-  console.log("radio", radio);
-  const [isPlaying, setIsPlaying] = useState(false);
-  const audioPlayer = useRef(); // grab audio elem to play pause
-
-  // useEffect(() => {
-  //   fetchCurrentlyPlayingByChannelId(channelIds[0]).then((res) =>
-  //     console.log("fetched radio by 1st id", res)
-  //   );
-  // }, []);
-
+  // Handler to start playback
   const handlePlay = () => {
-    console.log("Play!");
-    setIsPlaying(!isPlaying);
-    audioPlayer.current.play();
-  };
-  const handlePause = () => {
-    console.log("Pause!");
-    setIsPlaying(!isPlaying);
-    audioPlayer.current.pause();
+    audioRef.current.play();
+    setAudioState("playing");
   };
 
-  const handleBack = () => {
-    console.log("Back!");
+  // Handler to stop playback
+  const handleStop = () => {
+    audioRef.current.pause();
+    audioRef.current.currentTime = 0;
+    setAudioState("stopped");
   };
 
-  const handleNext = () => {
-    console.log("Next!");
-  };
-  const { id, image, imagetemplate, liveaudio, name, tagline } = radio;
+  if (loading) return <p>Loading...</p>;
+
   return (
     <div className="player-container">
-      {/* Song */}
+      {/* Image */}
       <div className="img-container">
-        <img src={imagetemplate} alt="Album Art" />
+        <img src={channels[0].imagetemplate} alt="Album Art" />
       </div>
-      {/* Now playing */}
-      <div className="player-details">
-        <h2 id="channel">{name}</h2>
-        <h3 id="song">Song name here</h3>
-        <audio src={liveaudio.url} ref={audioPlayer}></audio>
-      </div>
-      {/* Progress  */}
-      <div className="progress-container" id="progress-container">
-        <div className="progress" id="progress"></div>
-        <div className="duration-wrapper">
-          <span id="current-time">0:00</span>
-        </div>
-      </div>
-      {/* Controls  */}
+      {/* Channel Name */}
+      <h3 className="channel-name">{channels[0].name}</h3>
+      {/* Audio Player */}
+      <audio
+        ref={audioRef}
+        src={channels[0].liveaudio.url}
+        autoPlay={false}
+        controls
+      ></audio>
+      {/* Controls */}
       <div className="player-controls">
-        {/* rewrite these */}
-        <FaBackward
-          onClick={handleBack}
-          className="fas prev"
-          id="prev"
-          title="Previous"
-        />
-        {isPlaying ? (
-          <FaPause
-            onClick={handlePause}
-            className="fas pause"
-            id="pause"
-            title="Pause"
-          />
-        ) : (
-          <FaPlay
-            onClick={handlePlay}
-            className="fas play"
-            id="play"
-            title="Play"
-          />
+        {/* Play Button */}
+        {audioState === "stopped" && (
+          <FaPlay className="control-icon" onClick={handlePlay} title="Play" />
         )}
-
-        <FaForward
-          onClick={handleNext}
-          className="fas next"
-          id="next"
-          title="Next"
-        />
+        {/* Stop Button */}
+        {audioState === "playing" && (
+          <FaStop className="control-icon" onClick={handleStop} title="Stop" />
+        )}
       </div>
     </div>
   );
