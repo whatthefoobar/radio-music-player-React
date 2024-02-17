@@ -11,7 +11,7 @@ const apiSlice = createApi({
       query: () => "channels?format=json&indent=true&pagination=fals",
     }),
     fetchRadioPlaylistById: builder.query({
-      query: (id) =>
+      query: (id, skipToken) =>
         `playlists/getplaylistbychannelid?id=${id}&format=json&indent=true`,
     }),
   }),

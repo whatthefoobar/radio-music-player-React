@@ -1,19 +1,38 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { FaBackward, FaPlay, FaPause, FaStop, FaForward } from "react-icons/fa";
 import "./Player.css"; // Import CSS file for styling
-
-import { useFetchRadioChannelsQuery } from "../slices/apiSlice";
+import {
+  useFetchRadioChannelsQuery,
+  useFetchRadioPlaylistByIdQuery,
+} from "../slices/apiSlice";
 
 const Player = () => {
-  const {
-    data: { channels },
-    isLoading,
-  } = useFetchRadioChannelsQuery();
-  console.log("channels", channels);
+  const { data: channels, isLoading } = useFetchRadioChannelsQuery();
+  console.log("all channels", channels);
 
   const [audioState, setAudioState] = useState("stopped");
   const [currentChannelIndex, setCurrentChannelIndex] = useState(0);
+  const [channelsIds, setChannelsIds] = useState([]);
   const audioRef = useRef(null);
+
+  useEffect(() => {
+    if (channels && channels.length > 0) {
+    }
+    setChannelsIds(channels.channels.map((obj) => obj.id));
+  }, [channels]);
+
+  useEffect(() => {
+    console.log(channelsIds);
+  }, [channelsIds]);
+
+  const {
+    data: playlist,
+    loading: playlistLoading,
+    error: playlistError,
+  } = useFetchRadioPlaylistByIdQuery(channels.channels[currentChannelIndex].id);
+  // console.log("current channel id", channels.channels[currentChannelIndex].id);
+  console.log("playlist:", playlist);
+  // console.log("current song playing", playlist.song[0].description);
 
   // Handler to start playback
   const handlePlay = () => {
@@ -55,19 +74,23 @@ const Player = () => {
       {/* Image */}
       <div className="img-container">
         <img
-          src={channels[currentChannelIndex].imagetemplate}
+          src={channels.channels[currentChannelIndex].imagetemplate}
           alt="Album Art"
         />
       </div>
       {/* Channel Name */}
-      <h3 className="channel-name">{channels[currentChannelIndex].name}</h3>
+      <h3 className="channel-name">
+        {channels.channels[currentChannelIndex].name}
+      </h3>
       {/* Now Playing */}
-      {/* <div className="now-playing">Now Playing: ..........</div> */}
-      {/* {playlist?.song} */}
+      <div className="now-playing">
+        Now Playing: {playlist.song[0].description}
+      </div>
+
       {/* Audio Player */}
       <audio
         ref={audioRef}
-        src={channels[currentChannelIndex].liveaudio.url}
+        src={channels.channels[currentChannelIndex].liveaudio.url}
         autoPlay={false}
         controls
       ></audio>
@@ -91,6 +114,7 @@ const Player = () => {
         <FaForward className="control-icon" onClick={handleNext} title="Next" />
       </div>
     </div>
+    // <div>BLA</div>
   );
 };
 
